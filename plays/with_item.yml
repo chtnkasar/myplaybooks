@@ -1,0 +1,13 @@
+---
+ - hosts: byhn
+   remote_user: ansible
+   become: true
+   tasks:
+           - name: creating user by looping
+             user:
+                     name: "{{ item }}"
+                     state: present
+             with_items:
+                     - u1
+                     - u2
+

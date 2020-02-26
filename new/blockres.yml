@@ -1,0 +1,17 @@
+---
+ - hosts: localhost
+   remote_user: mockuser
+   become: true
+   tasks:
+           - block:
+                   - name: installing httpd and telnet
+                     yum:
+                             name:
+                                     - httpd
+                                     - telnat
+                             state: latest
+             rescue:
+                   - name: playbook failed
+                     debug: 
+                       msg: "task failed on {{ansible_default_ipv4.address}}"
+

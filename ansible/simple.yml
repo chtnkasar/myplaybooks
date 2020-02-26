@@ -1,0 +1,16 @@
+---
+ - hosts: centvm
+   remote_user: ansuser
+   become: true
+   tasks:
+            - name: Check absence of VG
+              command: vgdisplay data
+              register: vgdisplay
+            - name: print status
+              debug:
+                      msg: "vg is there"
+              when: vgdisplay.rc == 0        
+            - name: not found
+              debug:
+                      msg: "vg is absent"
+              when: vgdisplay.rc == 1        

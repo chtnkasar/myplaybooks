@@ -1,0 +1,13 @@
+---
+ - hosts: byhn
+   remote_user: mockuser
+   become: true
+   tasks:
+           - name: ram is greater than 2 gb
+             debug:
+                     msg: "ram is greater than 2 gb"
+             when: ansible_memtotal_mb > 1000
+           - name: ram is smaller than 2 gb
+             debug:
+                     msg: "ram is smaller than 2 gb"
+             when: ansible_memtotal_mb < 1000          

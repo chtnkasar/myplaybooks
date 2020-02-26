@@ -1,0 +1,14 @@
+---
+ - hosts: byhn
+   remote_user: ansible
+   become: true
+   tasks:
+           - name: task1
+             debug:
+                     msg: "this system is fedora"
+             when: ansible_distribution == "Fedora"
+          
+           - name: task2
+             debug:
+                     msg: "this system is CentOS"
+             when: ansible_distribution == "CentOS"        

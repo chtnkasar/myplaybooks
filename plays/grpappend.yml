@@ -1,0 +1,20 @@
+---
+ - hosts: localhost
+   remote_user: ansible
+   become: true
+   tasks:
+           - name: creating group sales
+             group:
+                     name: sales
+                     state: present
+           - name: creating group purchase
+             group:
+                     name: purchase
+                     state: present
+           - name: adding the user and appendig it to the groups
+             user:
+                     name: ymluser1
+                     state: present
+                     groups: sales,purchase
+                     #append: yes
+

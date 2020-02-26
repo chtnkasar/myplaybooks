@@ -1,0 +1,27 @@
+---
+ - hosts: localhost
+   remote_user: root
+   become: true
+   tasks:
+           - name: start fedvm
+             virt:
+               name: fedora30
+               state: running
+             tags: fedvmon, allvmon  
+           - name: shutdown fedvm
+             virt:
+               name: fedora30
+               state: shutdown
+             tags: fedvmoff, allvmoff  
+           - name: start centvm
+             virt:
+               name: centos7.0
+               state: running
+             tags: centvmon, allvmon  
+           - name: shutdown centvm
+             virt:
+               name: centos7.0
+               state: shutdown
+             tags: centmoff, allvmoff  
+               
+

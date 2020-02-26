@@ -1,0 +1,19 @@
+---
+ - hosts: localhost
+   remote_user: ansible
+   become: true
+   vars_files: uservar.yml
+           # name: 
+           # - myuser100
+           # - myuser200
+   tasks:
+           - name: creating user with name and uid
+             user:
+                     name: "{{ item }}"
+                     # uid: "{{ item.uid }}"
+                     state: present
+             with_items: "{{ name }}"
+                     #        - {"name":"myuser","uid":"1111"}
+                     # - {"name":"myuser1","uid":"2222"} 
+                     
+         

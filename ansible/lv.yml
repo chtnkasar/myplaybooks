@@ -1,0 +1,13 @@
+---
+ - hosts: centvm
+   remote_user: ansuser
+   become: true
+   tasks:
+           - name: check if vg exist
+             debug:
+                     msg: "vg present"
+             when: ansible_lvm.vgs.data is defined                    
+           - name: check if vg exist
+             debug:
+                     msg: "vg absent"
+             when: ansible_lvm.vgs.data is not defined   

@@ -1,0 +1,11 @@
+---
+ - hosts: byip
+   remote_user: ansible
+   become: true
+   #vars: 
+   # package: telnet
+   tasks:
+           - name: adding {{ myuser }}
+             user:
+                     name: "{{ myuser }}"
+                     state: present

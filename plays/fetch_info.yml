@@ -1,0 +1,14 @@
+---
+ - hosts: fedvm
+   remote_user: ansible
+   become: true
+   tasks:
+           - name: date
+             debug:
+                     msg:
+                             -  "current time is {{ ansible_date_time.time }}"
+                             -  "current date is {{ ansible_date_time.date }}"
+                             -  "current bios version is {{ ansible_bios_version }}"
+                             -  "current ipv4 address is {{ ansible_all_ipv4_addresses }}"
+                             -  "current mac address is {{ ansible_default_ipv4.macaddress }}"
+                 

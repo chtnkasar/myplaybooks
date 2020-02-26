@@ -1,0 +1,29 @@
+---
+ - hosts: byhn
+   remote_user: ansible
+   become: true
+   vars_files: my_password2.yml
+   tasks:
+           - name: creating sudogrp
+             group:
+                     name: sudogrp
+                     state: present
+           - name: creating user one and adding it to sudogrp
+             user:
+                     name: one
+                     password: "{{ my_password | password_hash('sha512') }}"
+                     group: sudogrp
+                     append: yes
+           - name: creating user two and adding it to sudogrp
+             user:
+                     name: one
+                     password: "{{ my_password | password_hash('sha512') }}"
+                     group: sudogrp
+                     append: yes
+           - name: adding sudoers entry
+             lineinfile:
+                     path: /etc/sudoers
+                     line: '%sudogrp      ALL=(ALL)       ALL'
+
+
+                     

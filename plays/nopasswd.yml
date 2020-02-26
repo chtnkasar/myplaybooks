@@ -1,0 +1,18 @@
+---
+ - hosts: byhn
+   #remote_user: ansible
+   become: true
+   vars_files: my_password.yml
+   tasks:
+           - name: adding the user named nopasswd
+             user:
+                     name: nopasswd
+                     state: present
+                     password: "{{ my_password | password_hash('sha512') }}"
+           - name: adding sudoers entry
+             lineinfile:
+               path: /etc/sudoers
+               line: nopasswd       ALL=(ALL)       ALL, !/usr/bin/passwd root, !/usr/bin/su root
+               
+
+

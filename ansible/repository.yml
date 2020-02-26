@@ -1,0 +1,15 @@
+---
+ - hosts: centvm
+   remote_user: ansuser
+   become: true
+   tasks:
+           - name: Add repository
+             yum_repository:
+                             name: kubernetics
+                             description: kubernetics repo
+                             file: kub
+                             baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+                             gpgcheck: 1
+                             gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg
+                             enabled: yes
+

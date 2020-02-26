@@ -1,0 +1,18 @@
+---
+ - hosts: byhn
+   remote_user: ansible
+   become: true
+   tasks:
+           - name: Installing Apache Server
+             yum:
+                     name: httpd
+                     state: latest
+           - name: creating a webpage
+             copy:
+                     content: "This webpage is created by Ansible" 
+                     dest: /var/www/html/index.html
+           - name: restarting apache service
+             service:
+                     name: httpd
+                     state: restarted
+                     enabled: yes          

@@ -1,0 +1,20 @@
+---
+ - hosts: localhost
+   remote_user: ansible
+   become: true
+   tasks:
+           - block:
+                   - name: task with error
+                     user:
+                             name: asd
+                             state: upasthit
+             rescue:
+                   - name: task for rescue
+                     user:
+                            name: asd
+                            state: present
+             always:
+                   - name: task for always
+                     debug:
+                       msg: "I am GOD"
+                           

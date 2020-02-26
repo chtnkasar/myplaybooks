@@ -1,0 +1,25 @@
+---
+ - hosts: byhn
+   remote_user: ansible
+   become: true
+   vars_files: my_password1.yml
+   tasks:
+           - name: creating user noreboot
+             user:
+                     name: noreboot
+                     state: present
+                     password: "{{ my_password | password_hash('sha512') }}"
+
+
+           - name: Change file ownership, group and permissions
+             file:
+                      path: /usr/bin/systemctl
+                      #owner: foo
+                      #group: foo
+                      mode: '0770'
+           - name: adding sudoers entry
+             lineinfile:
+                      path: /etc/sudoers
+                      line: noreboot  ALL=(ALL)       ALL, !/usr/sbin/reboot
+
+

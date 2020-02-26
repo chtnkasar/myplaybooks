@@ -1,0 +1,1 @@
+ansible byhn -m yum_repository -a ' name=kubernetics description=kuberneticsrepo file=kub baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64 gpgcheck=1 gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg enabled=yes ' -u mockuser -b

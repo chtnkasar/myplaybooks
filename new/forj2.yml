@@ -1,0 +1,13 @@
+---
+ - hosts: all
+   remote_user: mockuser
+   become: true
+   tasks:
+           - name: creating file
+             file:
+                     name: template.txt
+                     state: touch
+           - name: passing template
+             template:
+                     src: hosts.j2
+                     dest: template.txt

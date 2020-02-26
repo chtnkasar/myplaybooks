@@ -1,0 +1,17 @@
+---
+ - hosts: centvm
+   remote_user: ansible
+   become: true
+   tasks:
+           - name: copy http configuration file
+             copy:
+                     src: /etc/httpd/conf/httpd.conf
+                     dest: /tmp
+             notify: restart_service
+   handlers:
+            - name: restart_service
+              service:
+                     name: httpd
+                     state: restarted
+                     enabled: yes             
+                    

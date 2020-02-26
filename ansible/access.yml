@@ -1,0 +1,18 @@
+---
+ - hosts: all
+   remote_user: ansuser
+   become: true
+   tasks:
+        - block:   
+           - name: check connection
+             uri:
+                     url: https://www.google.com
+           - name: create access.html
+             copy:
+                     content: "site is accessible"
+                     dest: /var/www/html/access.html
+          rescue:
+           - name: create noaccess.html
+             copy:
+                     content: "site is not accessible"
+                     dest: /var/www/html/noaccess.html           

@@ -1,0 +1,51 @@
+---
+ - hosts: centvm
+   remote_user: ansuser
+   become: true
+   tasks:
+           - name: check if /dev/data volume group exist
+             stat:
+                     path: /dev/data
+             register: data
+           - name: vg absent
+             debug: 
+                    msg: "vg not present so the playbook failed"   
+             register: playfail
+             when: data.stat.exists == false       
+           - name: Create a logical volume of 2GB
+             lvol:
+                      vg: data
+                      lv: mylv
+                      size: 2G
+             register: lv
+             ignore_errors: true
+             when: playfail.failed == false
+           - name: when 1.5GB failed create a lv with 800MB              
+             lvol:
+                      vg: data
+                      lv: mylv
+                      size: 800M
+                      force: yes
+             when: lv.failed == true or playfail.failed == false 
+             register: vg 
+             ignore_errors: true
+           - name: format the lv
+             filesystem:
+                     fstype: ext4
+                     dev: /dev/data/mylv
+             when: lv.failed == false or vg.failed == false or playfail.failed == true  
+             ignore_errors: true      
+           - name: creating a mountpoint
+             file:
+                      path: /data
+                      state: directory
+             when: lv.failed == false or vg.failed == false or playfail.failed == true    
+             ignore_errors: true
+           - name: mounting the lvm
+             mount:
+                       fstype: ext4
+                       src: /dev/data/mylv
+                       path: /data
+                       state: mounted
+             when: lv.failed == false or vg.failed == false or playfail.failed == true  
+             ignore_errors: true

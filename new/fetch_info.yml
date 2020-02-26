@@ -1,0 +1,13 @@
+---
+ - hosts: byhn
+   remote_user: mockuser
+   become: true
+   tasks:
+          - name: getting disk sizes
+            debug: 
+                  msg:
+                          - "inventory hostname is {{inventory_hostname}}"
+                          - "total memory in mb is {{ansible_memtotal_mb}}"
+                          - "BIOS version is {{ansible_bios_version}}"
+                          - "vda size is {{ansible_devices.vda.size}}" 
+                          - "vdb size is {{ansible_devices.vdb.size}}" 

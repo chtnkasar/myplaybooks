@@ -1,0 +1,15 @@
+---
+ - hosts: localhost
+   remote_user: ansible
+   become: true
+   tasks:
+           - name: installing webhost server on RPM based OS
+             yum:
+                    name: httpd
+                    state: latest
+             when: ansible_os_family == "RedHat" or ansible_hostname == "Chaitanya"
+            - name: installing webhost server on Debian based OS
+              apt:
+                    name: apache2
+                    state: latest
+             when: ansible_os_family == "Debian"        

@@ -1,0 +1,13 @@
+---
+ - hosts: byhn
+   tasks:
+           - name: deleting ansuser
+             user:
+                     name: ansuser
+                     state: absent
+             
+           - name: deleting home dir of ansuser
+             file:
+                     name: /home/ansuser
+                     state: absent
+

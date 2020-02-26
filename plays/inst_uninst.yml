@@ -1,0 +1,17 @@
+---
+ - hosts: byhn
+   remote_user: ansible
+   become: true
+   tasks:
+           - name: installing httpd package
+             yum:
+                     name: httpd
+                     state: present
+           - name: removing httpd package
+             yum:
+                      name: httpd
+                      state: removed
+
+
+
+

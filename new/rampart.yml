@@ -1,0 +1,57 @@
+---
+ - hosts: byhn
+   remote_user: mockuser
+   become: true
+   tasks:
+           - name: creating partition of 2 gb if ram is greater than 1 gb
+             parted:
+                     device: /dev/vdb
+                     number: 1
+                     state: present
+                     part_end: 2GiB
+             when: ansible_memtotal_mb > 1000
+           - name: formatting the partition by xfs
+             filesystem:
+                     fstype: xfs
+                     dev: /dev/vdb1
+                     force: yes
+             when: ansible_memtotal_mb > 1000
+           - name: creating mountpoint for partition
+             file:
+                     path: /rampart
+                     state: directory
+             when: ansible_memtotal_mb > 1000
+           - name: mounting the patrition
+             mount:
+                    fstype: xfs
+                    src: /dev/vdb1
+                    path: /rampart
+                    state: mounted        
+             when: ansible_memtotal_mb > 1000       
+           - name: creating partition of 1 gb if ram is smaller than 1 gb
+             parted:
+                     device: /dev/vdb
+                     number: 1
+                     state: present
+                     part_end: 1GiB
+             when: ansible_memtotal_mb < 1000
+           - name: formatting the partition by xfs
+             filesystem:
+                     fstype: xfs
+                     dev: /dev/vdb1
+                     force: yes
+             when: ansible_memtotal_mb < 1000
+           - name: creating mountpoint for partition
+             file:
+                     path: /rampart
+                     state: directory
+             when: ansible_memtotal_mb < 1000
+           - name: mounting the patrition
+             mount:
+                    fstype: xfs
+                    src: /dev/vdb1
+                    path: /rampart
+                    state: mounted        
+             when: ansible_memtotal_mb < 1000       
+
+

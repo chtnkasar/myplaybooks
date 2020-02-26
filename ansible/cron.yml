@@ -1,0 +1,14 @@
+--- 
+ - hosts: byhn
+   remote_user: mockuser
+   become: true
+   tasks:
+    - name: Creates a cron file under /etc/cron.d
+      cron:
+         name: file create
+         weekday: "*" 
+         minute: "*"
+         hour: "*"
+         user: mockuser
+         job: "mkdir /home/mockuser/cron"
+

@@ -1,0 +1,14 @@
+---
+ - hosts: byhn
+   remote_user: ansible
+   become: true
+   tasks:
+           - name: installing httpd
+             yum:
+                     name: httpd
+                     state: installed
+           - name: Restarting and Enabling httpd
+             service:        
+                     name: httpd
+                     state: restarted
+                     enabled: yes          

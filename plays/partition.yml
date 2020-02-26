@@ -1,0 +1,26 @@
+---
+ - hosts: centvm
+   remote_user: ansible
+   become: true
+   tasks:  
+           - name: Creating a new primary partition with a size of 1GiB
+             parted:
+                device: /dev/vdb
+                number: 1
+                state: present
+                part_start: 1.1GiB
+                part_end: 2GiB
+           - name: Creating a ext2 filesystem on /dev/vdb1
+             filesystem:
+                fstype: ext2
+                dev: /dev/vdb1
+           - name: creating a mounting point
+             file:
+                path: /ansiblemount
+                state: directory     
+           - name: mounting the partition
+             mount:
+                fstype: ext2
+                src: /dev/vdb1
+                path: /ansiblemount
+                state: mounted      

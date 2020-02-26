@@ -1,0 +1,3 @@
+{%for byhn in groups['all']%}
+{{hostvars[byhn]['ansible_facts']['default_ipv4']['address']}}{{hostvars[byhn]['ansible_facts']['fqdn']}}{{hostvars[byhn]['ansible_facts']['hostname']}}
+{%endfor%}

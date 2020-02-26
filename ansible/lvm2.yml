@@ -1,0 +1,57 @@
+---
+ - hosts: centvm
+   remote_user: ansuser
+   become: true
+   tasks:
+           - name: check if /dev/data volume group exist
+             stat:
+                     path: /dev/data
+             register: data
+           - name: if VG does not exits create one
+             lvg:
+                     vg: data
+                     pvs: /dev/vdb1
+             register: lvg        
+             when: data.stat.exists == false
+           - name: Create a logical volume of 2GB
+             lvol:
+                      vg: data
+                      lv: mylv
+                      size: 2G
+             register: lv
+             ignore_errors: true
+           - name: when 1.5GB failed create a lv with 800MB              
+             lvol:
+                      vg: data
+                      lv: mylv
+                      size: 800M
+                      force: yes
+                      # pvs: /dev/vdb1
+             when: lv.failed == true
+             register: vg 
+             ignore_errors: true        
+           - name: msg for vg failed
+             debug:
+                     msg: "cant process VG"
+             when: lvg.failed == true or lv.failed == true and vg.failed == true      
+           - name: playbook failed
+             debug:
+                      msg: "playbook failed"  
+             when: lv.failed == true and vg.failed == true        
+           - name: format the lv
+             filesystem:
+                     fstype: ext4
+                     dev: /dev/data/mylv
+             when: lv.failed == false or vg.failed == false         
+           - name: creating a mountpoint
+             file:
+                      path: /data
+                      state: directory
+             when: lv.failed == false or vg.failed == false         
+           - name: mounting the lvm
+             mount:
+                       fstype: ext4
+                       src: /dev/data/mylv
+                       path: /data
+                       state: mounted
+             when: lv.failed == false or vg.failed == false          

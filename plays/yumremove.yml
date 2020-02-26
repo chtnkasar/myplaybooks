@@ -1,0 +1,7 @@
+---
+ - hosts: byhn
+   tasks:
+           - name: removing httpd
+             yum:
+                     name: httpd
+                     state: removed

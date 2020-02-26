@@ -1,0 +1,43 @@
+---
+ - hosts: byhn
+   remote_user: ansible
+   become: true
+   tasks:
+           - name: creating repo for jenkins
+             get_url:
+               url: http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
+               dest: /etc/yum.repos.d/jenkins.repo
+             tags: geturl  
+           - name: importing rpm key
+             command : rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
+             tags: import_key
+           - name: installing jenkins
+             yum:
+               name: jenkins
+               state: latest
+             notify:
+                     - restart_jenkins
+                     - allow_firewall
+             tags: install_jenkins  
+           - name: installing java
+             yum:
+               name: java
+               state: latest
+             tags: install_java  
+   handlers:
+           - name: restart_jenkins
+             service:
+               name: jenkins
+               state: restarted
+               enabled: yes
+             tags: restart_service  
+           - name: allow_firewall 
+             firewalld:
+               port: 8080/tcp 
+               permanent: yes
+               state: enabled
+             tags: allow_firewall  
+
+    
+
+    

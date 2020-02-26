@@ -1,0 +1,12 @@
+---
+ - hosts: byhn
+   tasks:
+           - name: installing httpd
+             yum:
+                     name: httpd
+                     state: installed
+           - name: Restarting and Enabling httpd
+             service:        
+                     name: httpd
+                     state: restarted
+                     enabled: yes          
