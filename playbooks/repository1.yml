@@ -1,0 +1,21 @@
+--- 
+ - hosts: centvm
+   remote_user: ansuser
+   become: true
+   tasks:
+           - name: create epo
+             yum_repository:
+                     name: jenkins
+                     description: testrepo
+                     file: jenkinsnew
+                     baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+                     enabled: yes
+           - name: call rpm key
+             get_url:
+                     url: https://jenkins-ci.org/redhat/jenkins-ci.org.key
+                     dest: /etc/yum.repos.d/jenkins-ci-org.key
+           - name: import key
+             rpm_key:
+                     state: present
+                     key: https://jenkins-ci.org/redhat/jenkins-ci.org.key 
+

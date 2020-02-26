@@ -1,0 +1,52 @@
+---
+ - hosts: centvm
+   remote_user: ansuser
+   become: true
+   tasks:
+        - block:   
+           - name: Create a logical volume of 2GB
+             lvol:
+                      vg: data
+                      lv: mylv
+                      size: 2G
+             
+          rescue:
+           - name: create a volume group named data
+             lvg:
+                 vg: data
+                 pvs: /dev/vdb1
+       
+           - name: when 1.5GB failed create a lv with 800MB              
+             lvol:
+                      vg: data
+                      lv: mylv
+                      size: 800M
+                      force: yes
+                      pvs: /dev/vdb1
+             register: vg 
+             ignore_errors: true        
+           - name: msg for vg failed
+             debug:
+                     msg: "cant process VG"
+             when: vg.failed == true       
+           - name: playbook failed
+             debug:
+                      msg: "playbook failed"                     
+             when: vg.failed == true       
+           - name: format the lv
+             filesystem:
+                      fstype: ext4
+                      dev: /dev/data/mylv           
+             when: vg.failed == false       
+           - name: creating a mountpoint
+             file:
+                      path: /data
+                      state: directory
+             when: vg.failed == false       
+           - name: mounting the lvm
+             mount:
+                       fstype: ext4
+                       src: /dev/data/mylv
+                       path: /data
+                       state: mounted
+             when: vg.failed == false       

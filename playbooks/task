@@ -1,0 +1,8 @@
+vgname=data
+size 1500MB
+lvname= mylv
+size= 1500mb (error)
+filesystem=ext4
+mount /data
+if oversized (error) then it should create lv with 800MB
+if vg not exits it should debug vg not exist

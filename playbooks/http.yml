@@ -1,0 +1,23 @@
+---
+ - hosts: byhn
+   remote_user: ansuser
+   become: true
+   tasks:
+           - name: install httpd
+             yum:
+                     name: httpd
+                     state: latest
+             tags: install        
+             ignore_errors: true        
+           - name: create index.html
+             copy:
+                     content: "this is index file"
+                     dest: /var/www/html/index.html
+           - name: restart service
+             service:
+                     name: httpd
+                     state: started
+                     enabled: yes
+                             
+
+

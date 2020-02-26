@@ -1,0 +1,36 @@
+---
+ - hosts: all
+   remote_user: ansuser
+   become: true
+   tasks:
+           - name: download the conf file
+             get_url:
+                     url: http://192.168.122.1/resources/two.conf
+                     dest: /etc/httpd/conf.d/secure.conf
+           - name: replace the conf lines
+             replace:
+                     path: /etc/httpd/conf.d/secure.conf
+                     regexp: 'Allowoverride none'
+                     replace: 'AllowoverRide AuthConfig'     
+             ignore_errors: true        
+           - name: create private directory
+             file:
+                     name: /var/www/html/private
+                     state: directory
+                     #mode: 0644
+           - name: download the htpasswd file
+             get_url: 
+                     url: http://192.168.122.1/resources/htpasswd
+                     dest: /var/www/html/private/.htpasswd
+             tags: htpasswd        
+           - name: create secure webpage
+             copy:
+                     content: "this page is secure"
+                     dest: /var/www/html/private/index.html
+           - name: restart the service
+             service:
+                      name: httpd
+                      state: restarted          
+
+
+
