@@ -1,0 +1,28 @@
+---
+ - hosts: centvm
+   remote_user: ansible
+   become: true
+   roles:
+           - examfun
+   tasks:
+          - name: adding groups
+            group:
+                  name: "{{item}}"
+                  state: absent
+            loop:
+                 - staffgroup
+                 - webclientsgroup
+                 - guestgroup
+          - name: add user in staffgroup
+            user:
+                  name: "{{item}}"
+                  state: present
+                  group: staffgroup
+                  append: yes
+            loop: "{{staffgroup}}"            
+           
+          - name: remove user in revoke group
+            user:
+                    name: "{{item}}"
+                    state: absent
+            loop: "{{revokegroup}}"        

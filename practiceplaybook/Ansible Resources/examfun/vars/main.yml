@@ -1,0 +1,18 @@
+---
+# vars file for examfun
+staffgroup:
+  - user1
+  - user2
+  - user3
+webclientsgroup:
+  - user4
+  - user5
+  - user6
+guestgroup:
+  - user7
+  - user8
+  - user9
+revokegroup:
+  - user1
+  - user4
+  - user7

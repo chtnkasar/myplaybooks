@@ -1,0 +1,31 @@
+- name: adding three groups
+  group:
+          name: "{{ item }}"
+          state: present
+  loop:
+       - mgm
+       - jnec
+       - gyp        
+- name: adding user to mgm
+  user:
+          name: "{{ item }}"
+          state: absent
+          group: mgm
+          append: yes
+  loop: "{{mgm}}"        
+
+- name: adding user to jnec
+  user:
+          name: "{{ item }}"
+          state: absent
+          group: mgm
+          append: yes
+  loop: "{{jnec}}"
+  
+- name: adding user to gyp
+  user:
+          name: "{{ item }}"
+          state: absent
+          group: mgm
+          append: yes
+  loop: "{{gyp}}"

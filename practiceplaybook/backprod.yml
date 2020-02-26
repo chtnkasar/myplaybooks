@@ -1,0 +1,13 @@
+---
+ - hosts: all 
+   remote_user: ansible
+   become: true
+   tasks:
+           - name: perform on backup group
+             command: tar -cvf /tmp/mntback.tar /mnt/
+             tags: backup
+             when: inventory_hostname in groups ['backup']
+           - name: preform on production group
+             command: tar -cvf /tmp/varback.tar /var/ 
+             tags: production
+             when: inventory_hostname in groups ['production']

@@ -1,0 +1,17 @@
+---
+ - hosts: byhn
+   remote_user: ansible
+   become: true
+   tasks:
+           - name: check if the file exists
+             stat:
+                     path: /mnt/save.txt
+             register: check
+           - name: if not present then copy the content
+             lineinfile:
+                     path: /mnt/save.txt
+                     line: "i am there"
+                     create: yes
+             when: check.stat.exists == False
+                   
+

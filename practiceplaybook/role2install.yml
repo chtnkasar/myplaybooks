@@ -1,0 +1,3 @@
+---
+ - src: http://localhost/resources/examfun.tar.gz
+   name: examfun

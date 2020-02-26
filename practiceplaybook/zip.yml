@@ -1,0 +1,21 @@
+---
+- hosts: byhn
+  become: true
+  tasks:
+    - name: Include secrets.
+      include_vars:
+        file: zippass.yml
+    - name: Create directory
+      file:
+        state: directory
+        path: /tmp/test-30100
+    - name: Unpack zip file.
+      #no_log: true
+      archive:
+        src: files/test-30100.zip
+        dest: /tmp/test-30100
+        # copy: no
+        #mode: 0755
+        extra_opts:
+          - '-P'
+          - "{{password}}"

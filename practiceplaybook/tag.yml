@@ -1,0 +1,14 @@
+---
+ - name: tag
+   hosts: all
+   become: true
+   tasks:
+    - name: tarball
+      command: tar -cvzf /tmp/dd.tar.gz /mnt 
+      tags: production
+      when: inventory_hostname in groups ['production']
+    - name: tarball
+      command: tar -cvzf /tmp/dff.tar.gz /mnt
+      tags: backup
+      when: inventory_hostname in groups ['backup']
+

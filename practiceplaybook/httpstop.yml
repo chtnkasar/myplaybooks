@@ -1,0 +1,10 @@
+---
+ - hosts: [localhost,centvm]
+   remote_user: ansible
+   become: true
+   tasks:
+           - name: starting the httpd on all nodes
+             service:
+                     name: httpd
+                     state: stopped
+             when: ansible_hostname == "fedvm" or ansible_hostname == "centvm"        

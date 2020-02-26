@@ -1,0 +1,10 @@
+---
+ - hosts: byhn 
+   remote_user: ansible
+   become: true
+   tasks:
+           - name: starting the httpd on all nodes
+             service:
+                     name: httpd
+                     state: started
+                     

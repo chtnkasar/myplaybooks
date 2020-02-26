@@ -1,0 +1,40 @@
+---
+ - hosts: fedvm
+   remote_user: ansible
+   become: true
+   tasks:
+           - name: install httpd
+             yum:
+                     name: httpd
+                     state: latest
+             tags: install         
+           - name: start the httpd service
+             service:
+                     name: httpd
+                     state: started           
+           - name: create document root to be secured
+             file:
+                     path: /var/www/html/private
+                     state: directory
+           - name: copy the conf file
+             copy:
+                     src: /home/ansible/two.conf
+                     dest: /etc/httpd/conf.d/two.conf
+           - name: copy the .htpasswd file
+             copy:
+                     src: /home/ansible/htpasswd
+                     dest: /var/www/html/private/.htpasswd
+           - name: creating index.html
+             copy:
+                     content: "you are logged in to {{ansible_hostname}}"
+                     dest: /var/www/html/private/index.html
+           - name: replacing override scheme
+             replace:
+                     path: /etc/httpd/conf.d/two.conf
+                     regexp: "Allowoverride none" 
+                     replace: "Allowoverride AuthConfig"        
+           - name: restart the service
+             service:
+                      name: httpd
+                      state: restarted           
+                          

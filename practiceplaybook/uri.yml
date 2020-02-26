@@ -1,0 +1,21 @@
+---
+ - hosts: fedvm
+   remote_user: ansible
+   become: true
+   tasks:
+         - block:
+             - name: checking the connection
+               uri:
+                     url: https://www.google.com/
+             - name: creating access.html
+               copy:
+                     content: "i am accesible"
+                     dest: /tmp/access.html
+           rescue: 
+             - name: creating noaccess.html
+               copy:
+                     content: "i am not accesible"
+                     dest: /tmp/noaccess.html
+
+
+

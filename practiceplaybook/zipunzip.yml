@@ -1,0 +1,12 @@
+---
+ - hosts: centvm
+   remote_user: ansible
+   become: true
+   vars_files: crypt.yml
+   tasks:
+           - name: download the zip file
+             get_url:
+                     url: http://192.168.122.1/resources/vault.zip
+                     dest: /var/
+           - name: unzipping the file
+             command: unzip -o -P {{ password }} /var/vault.zip -d /tmp

@@ -1,0 +1,20 @@
+---
+ - hosts: byhn
+   remote_user: ansible
+   become: true
+   tasks:
+           - name: creating /tmp archive
+             archive:
+                path: /tmp/*
+                dest: /home/tmp.zip
+                format: zip
+                #when: ansible_hostname == "fedvm"   
+             tags: unnati
+           - name: creating /mnt archive
+             archive:
+                path: /mnt/
+                dest: /home/mnt.zip
+                format: zip
+                # when: ansible_hostname == "centvm"   
+             tags: redhat
+             

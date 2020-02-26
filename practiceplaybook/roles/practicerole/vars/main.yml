@@ -1,0 +1,14 @@
+---
+# vars file for practicerole
+mgm:
+        - mgm1
+        - mgm2
+        - mgm3 
+jnec:
+        - jnec1
+        - jnec2
+        - jnec3 
+gyp:
+        - gyp1
+        - gyp2
+        - gyp3

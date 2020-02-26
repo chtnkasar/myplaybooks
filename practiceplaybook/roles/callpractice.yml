@@ -1,0 +1,13 @@
+---
+ - hosts: fedvm
+   remote_user: ansible
+   become: true
+   pre_tasks:
+           - debug:
+                   msg: "this is pre"
+   roles:
+           - practicerole
+   post_tasks:
+            - debug:
+                    msg: "this is post"   
+ 

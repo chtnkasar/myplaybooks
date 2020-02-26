@@ -1,0 +1,25 @@
+---
+ - hosts: fedvm
+   remote_user: ansible
+   become: true
+   tasks:
+            - name: Create a logical volume of 512m
+              lvol:
+                      vg: myvg
+                      lv: mylv
+                      size: 700
+            - name: format the lv
+              filesystem:
+                      fstype: ext2
+                      dev: /dev/myvg/mylv
+            - name: creating a mountpoint
+              file:
+                      path: /lvmmount
+                      state: directory
+            - name: mounting the lvm
+              mount:
+                       fstype: ext2
+                       src: /dev/myvg/mylv
+                       path: /lvmmount
+                       state: mounted
+
